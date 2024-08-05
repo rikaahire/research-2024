@@ -62,7 +62,7 @@ For more details, see citations.
 ## Explore trends
 Get distances between occupations and "stereotypes"
 
-### Words lists:
+### Word lists:
 - Stereotype word lists: 14 lists of words relating to “female,” “male,” “prestige,” “common,” “education,” “uneducation,” “affluent,” “poor,” “good,” “bad,” “strong,” “weak,” “active,” “passive”
 - Occupation list: List of 315 jobs
 
