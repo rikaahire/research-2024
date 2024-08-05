@@ -23,6 +23,16 @@
 2. Stop words are downsampled
 3. Stop words are downsampled and punctuation is removed
 
+To get word embeddings, use command
+```
+python w2v_dec.py
+```
+
+To write word embeddings to text file, use command
+```
+python write_embeddings.py
+```
+
 ## Evaluate word embeddings
 ### Metrics:
 1. Similarity score: Measure of how similar two words are
