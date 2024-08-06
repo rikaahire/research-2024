@@ -1,0 +1,6 @@
+A add/mul: 0.141/0.136
+prefix add/mul: 0.31/0.292
+AB add/mul: 0.094/0.094
+suffix add/mul: 0.341/0.339
+Total accuracy (add): 0.26
+Total accuracy (mul): 0.252

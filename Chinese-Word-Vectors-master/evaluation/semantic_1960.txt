@@ -1,0 +1,6 @@
+geography add/mul: 0.656/0.643
+nature add/mul: 0.353/0.32
+history add/mul: 0.0/0.0
+people add/mul: 0.676/0.657
+Total accuracy (add): 0.564
+Total accuracy (mul): 0.545
