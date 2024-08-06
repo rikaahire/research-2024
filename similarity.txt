@@ -1,0 +1,28 @@
+Loaded model from decade_1940_model.pkl
+Similarity between "妈妈" and "女人": 0.6033191680908203
+Similarity between "妈妈" and "男人": 0.4566197991371155
+Similarity between "女人" and "男人": 0.6535946130752563
+Loaded model from decade_1950_model.pkl
+Similarity between "妈妈" and "女人": 0.5162064433097839
+Similarity between "妈妈" and "男人": 0.4401439130306244
+Similarity between "女人" and "男人": 0.5890427231788635
+Loaded model from decade_1960_model.pkl
+Similarity between "妈妈" and "女人": 0.4754011929035187
+Similarity between "妈妈" and "男人": 0.37929603457450867
+Similarity between "女人" and "男人": 0.6240636706352234
+Loaded model from decade_1970_model.pkl
+Similarity between "妈妈" and "女人": 0.43578213453292847
+Similarity between "妈妈" and "男人": 0.33929213881492615
+Similarity between "女人" and "男人": 0.637884795665741
+Loaded model from decade_1980_model.pkl
+Similarity between "妈妈" and "女人": 0.48418402671813965
+Similarity between "妈妈" and "男人": 0.42930153012275696
+Similarity between "女人" and "男人": 0.734169602394104
+Loaded model from decade_1990_model.pkl
+Similarity between "妈妈" and "女人": 0.4859878122806549
+Similarity between "妈妈" and "男人": 0.4356064796447754
+Similarity between "女人" and "男人": 0.7541317343711853
+Loaded model from decade_2000_model.pkl
+Similarity between "妈妈" and "女人": 0.469387412071228
+Similarity between "妈妈" and "男人": 0.42699363827705383
+Similarity between "女人" and "男人": 0.7740383744239807
