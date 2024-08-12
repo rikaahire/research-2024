@@ -8,19 +8,60 @@ import numpy as np
 
 # Directory
 directory = '/scratch/network/sa3937/wordembed/data-renminribao'
+stopwords_file = '/scratch/network/sa3937/wordembed/w2v_dec_nopunc/stopwords-zh.txt'
+punctuation = set('、。〈〉《》︿！＃＄％＆（）＊＋，０１２３４５６７８９：；＜＞？＠［］｛｜｝～￥ “”')
 
 
 # Make directory for models
-models = '/scratch/network/sa3937/wordembed/w2v_dec_nodownsamp/models_dec'
+models = '/scratch/network/sa3937/wordembed/w2v_dec_nopunc/models_dec'
 os.makedirs(models, exist_ok=True)
 
 
 # Hyperparameters
 vector_size = 300
 window_size = 5
-min_count_ngram = 100
+min_count = 100
 epochs = 5
 negative_samples = 5
+
+
+# Read stopwords from file
+with open(stopwords_file, 'r', encoding='utf-8') as f:
+    stopwords = set(line.strip() for line in f)
+    
+# Function to remove punctuation
+def clean_text(text, punctuation):
+    return ''.join(char for char in text if char not in punctuation)
+
+
+# Function to downsample stop words
+def downsample_stopwords(texts, stopwords, threshold=1e-5):
+    word_counts = {}
+    total_count = 0
+    
+    for text in texts:
+        for word in text:
+            if word in word_counts:
+                word_counts[word] += 1
+            else:
+                word_counts[word] = 1
+            total_count += 1
+
+    word_freqs = {word: count / total_count for word, count in word_counts.items()}
+    downsampled_texts = []
+    
+    for text in texts:
+        new_text = []
+        for word in text:
+            if word in stopwords:
+                prob_keep = (threshold / word_freqs[word])**0.5 + threshold / word_freqs[word]
+                if prob_keep >= 1.0 or np.random.rand() < prob_keep:
+                    new_text.append(word)
+            else:
+                new_text.append(word)
+        downsampled_texts.append(new_text)
+    
+    return downsampled_texts
 
 
 # Initialize variables for decade processing
@@ -39,9 +80,17 @@ for file in sorted(os.listdir(directory)):
     # 4th column (content)
     df['content'] = df.iloc[:, 3].astype(str)
     
+    # Remove punctuation
+    print('Removing punctuation...')
+    df['cleaned_content'] = df['content'].apply(lambda x: clean_text(x, punctuation))
+    
     # Segment content into words
     print('Segmenting...')
-    df['segmented_content'] = df['content'].apply(lambda x: list(jieba.cut(x)))
+    df['segmented_content'] = df['cleaned_content'].apply(lambda x: list(jieba.cut(x)))
+
+    # Downsample stop words
+    print('Downsampling stop words...')
+    df['segmented_content'] = downsample_stopwords(df['segmented_content'], stopwords)
     
     # Add texts to the current decade
     decade_texts.extend(df['segmented_content'])
@@ -55,7 +104,7 @@ for file in sorted(os.listdir(directory)):
                 sentences=decade_texts, 
                 vector_size=vector_size, 
                 window=window_size, 
-                min_count=min_count_ngram, 
+                min_count=min_count, 
                 workers=4, 
                 epochs=epochs, 
                 negative=negative_samples
@@ -64,7 +113,7 @@ for file in sorted(os.listdir(directory)):
             model = Word2Vec(
                 vector_size=vector_size, 
                 window=window_size, 
-                min_count=min_count_ngram, 
+                min_count=min_count, 
                 workers=4, 
                 epochs=epochs, 
                 negative=negative_samples

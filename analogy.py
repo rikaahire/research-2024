@@ -11,7 +11,7 @@ word4 = '爸爸'  # dad
 output_file = 'analogy.txt'
 
 # Load the saved Word2Vec model
-models = '/scratch/network/sa3937/wordembed/w2v_dec_nodownsamp/models_dec'
+models = '/scratch/network/sa3937/wordembed/w2v_dec_nopunc/models_dec'
 with open(output_file, 'w') as f_out:
     for file in os.listdir(models):
         if file.endswith('_model.pkl'):

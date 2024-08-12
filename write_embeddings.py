@@ -2,13 +2,13 @@ import gensim
 import os
 
 # Make directory for word embeddings
-embed = '/scratch/network/sa3937/wordembed/w2v_dec_nodownsamp/word_embeddings'
+embed = '/scratch/network/sa3937/wordembed/w2v_dec_nopunc/word_embeddings'
 os.makedirs(embed, exist_ok=True)
 
 current_decade = 1940
 
 # Path to the models directory
-models = '/scratch/network/sa3937/wordembed/w2v_dec_nodownsamp/models_dec'
+models = '/scratch/network/sa3937/wordembed/w2v_dec_nopunc/models_dec'
 
 # Iterate through the model files and process them
 for file in os.listdir(models):
