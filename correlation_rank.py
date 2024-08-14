@@ -3,8 +3,7 @@ import numpy as np
 from gensim.models import Word2Vec
 import pickle
 import matplotlib.pyplot as plt
-from scipy.stats import spearmanr
-from scipy.stats import kendalltau
+import scipy.stats as stats
 
 
 # Word lists
@@ -109,7 +108,7 @@ for file in os.listdir(models):
 # Dictionary to store results
 results = {}
 
-# Define word pairs
+# Word pairs
 word_pairs = [
     (female_words, male_words, 'Female vs Male'),
     (prestige_words, common_words, 'Prestige vs Common'),
@@ -124,7 +123,7 @@ word_pairs = [
 with open('/scratch/network/sa3937/wordembed/w2v_dec_nopunc/correlation_rank.txt', 'w') as f_out:
     # Iterate over each word pair
     for word_list_1, word_list_2, label in word_pairs:
-        # Calculate distances for the first and second word lists
+        # Calculate distances for 1st and 2nd word lists
         result_1 = calculate_dist(model1, model2, word_list_1, jobs)
         result_2 = calculate_dist(model1, model2, word_list_2, jobs)
         
@@ -138,15 +137,16 @@ with open('/scratch/network/sa3937/wordembed/w2v_dec_nopunc/correlation_rank.txt
             # Difference in distances for model (decade) 2
             diff_dist_2 = np.array(min_dist_2_1) - np.array(min_dist_2_2)
             
-            # Rank occupations based on differences for the first decade
+            # Rank occupations based on differences for 1st decade
             ranks_dec_1 = np.argsort(diff_dist_1)
             
             # Get rank-based correlation
-            corr_dec_1 = spearmanr(ranks_dec_1, diff_dist_1).correlation
-            corr_dec_2 = spearmanr(ranks_dec_1, diff_dist_2).correlation
+            corr_dec_1, p_value_dec_1 = stats.spearmanr(ranks_dec_1, diff_dist_1)
+            corr_dec_2, p_value_dec_2 = stats.spearmanr(ranks_dec_1, diff_dist_2)
             
-            corr_dec_1_ken = kendalltau(ranks_dec_1, diff_dist_1).correlation
-            corr_dec_2_ken = kendalltau(ranks_dec_1, diff_dist_2).correlation
+            corr_dec_1_ken, p_value_dec_1_ken = stats.kendalltau(ranks_dec_1, diff_dist_1)
+            corr_dec_2_ken, p_value_dec_2_ken = stats.kendalltau(ranks_dec_1, diff_dist_2)
+            
             
             # Save results to dictionary
             results[label] = {
@@ -159,14 +159,22 @@ with open('/scratch/network/sa3937/wordembed/w2v_dec_nopunc/correlation_rank.txt
             # Write results to file
             f_out.write(f"{label}:\n")
             f_out.write(f"Spearman correlation coefficient for dec 1: {corr_dec_1}\n")
+            f_out.write(f"Spearman p-value for dec 1: {p_value_dec_1}\n")
             f_out.write(f"Spearman correlation coefficient for dec 2: {corr_dec_2}\n")
+            f_out.write(f"Spearman p-value for dec 2: {p_value_dec_2}\n")
             f_out.write(f"Kendall tau for dec 1: {corr_dec_1_ken}\n")
-            f_out.write(f"Kendall tau for dec 2: {corr_dec_2_ken}\n\n")
+            f_out.write(f"Kendall tau p-value for dec 1: {p_value_dec_1_ken}\n")
+            f_out.write(f"Kendall tau for dec 2: {corr_dec_2_ken}\n")
+            f_out.write(f"Kendall tau p-value for dec 2: {p_value_dec_2_ken}\n\n")
             
             print(f"{label}:")
             print("Spearman correlation coefficient for dec 1:", corr_dec_1)
+            print("Spearman p-value for dec 1:", p_value_dec_1)
             print("Spearman correlation coefficient for dec 2:", corr_dec_2)
+            print("Spearman p-value for dec 2:", p_value_dec_2)
             print("Kendall tau for dec 1:", corr_dec_1_ken)
+            print("Kendall tau p-value for dec 1:", p_value_dec_1_ken)
             print("Kendall tau for dec 2:", corr_dec_2_ken)
+            print("Kendall tau p-value for dec 2:", p_value_dec_2_ken)
             print()
             

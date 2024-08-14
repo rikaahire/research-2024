@@ -110,7 +110,7 @@ for file in os.listdir(models):
 # Dictionary to store results
 results = {}
 
-# Define word pairs
+# Word pairs
 word_pairs = [
     (female_words, male_words, 'Female vs Male'),
     (prestige_words, common_words, 'Prestige vs Common'),
@@ -125,7 +125,7 @@ word_pairs = [
 with open('/scratch/network/sa3937/wordembed/w2v_dec_nopunc/correlation_value.txt', 'w') as f_out:
     # Iterate over each word pair
     for word_list_1, word_list_2, label in word_pairs:
-        # Calculate distances for the first and second word lists
+        # Calculate distances for 1st and 2nd word lists
         result_1 = calculate_dist(model1, model2, word_list_1, jobs)
         result_2 = calculate_dist(model1, model2, word_list_2, jobs)
         
@@ -143,7 +143,7 @@ with open('/scratch/network/sa3937/wordembed/w2v_dec_nopunc/correlation_value.tx
             corr, p_value = pearsonr(diff_dist_1, diff_dist_2)
             
             # Calculate linear regression slope
-            slope, intercept, r_value, p_value_lin, std_err = linregress(diff_dist_1, diff_dist_2)
+            slope, intercept, r_value, p_value, std_err = linregress(diff_dist_1, diff_dist_2)
             
             # Save results to dictionary
             results[label] = {
@@ -152,7 +152,7 @@ with open('/scratch/network/sa3937/wordembed/w2v_dec_nopunc/correlation_value.tx
                 'Slope': slope,
                 'Intercept': intercept,
                 'R-squared': r_value**2,
-                'P-value (Linear)': p_value_lin
+                'P-value': p_value
             }
             
             # Write results to file
@@ -162,7 +162,7 @@ with open('/scratch/network/sa3937/wordembed/w2v_dec_nopunc/correlation_value.tx
             f_out.write(f"Slope: {slope}\n")
             f_out.write(f"Intercept: {intercept}\n")
             f_out.write(f"R-squared: {r_value**2}\n")
-            f_out.write(f"P-value (Linear): {p_value_lin}\n\n")
+            f_out.write(f"P-value: {p_value}\n\n")
             
             print(f"{label}:")
             print("Pearson correlation coefficient:", corr)
@@ -170,7 +170,7 @@ with open('/scratch/network/sa3937/wordembed/w2v_dec_nopunc/correlation_value.tx
             print("Slope:", slope)
             print("Intercept:", intercept)
             print("R-squared:", r_value**2)
-            print("P-value (Linear):", p_value_lin)
+            print("P-value:", p_value)
             print()
             
             # Plot differences
