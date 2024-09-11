@@ -36,7 +36,7 @@ python write_embeddings.py
 ## Evaluate word embeddings
 ### Metrics:
 1. Similarity score: Measure of how similar two words are
-2. Analogy problem: “A is to B as C is to D”
+2. Analogy problem (semantic and morphological/synctatic): “A is to B as C is to D”
 
 ### Checks:
 To check word embeddings, use commands
